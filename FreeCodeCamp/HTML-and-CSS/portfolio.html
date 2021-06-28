@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio</title>
+    <link rel="stylesheet" href="portfolio.css">
+    <script src="https://kit.fontawesome.com/0ce9d57bf8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!--menu-btn-->
+    <div class='ham-btn ham-x' >
+        <div class='lines' >
+            <div class='l1'></div>
+            <div class='l2'></div>
+            <div class='l3'></div>
+            <div class='l4'></div>
+        </div>
+	</div>
+    <!-- START NAV -->
+    <nav id="navbar" class="nav">
+        <ul class="nav-list">
+            <li><a href="#welcome-section">Hello</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!--WELCOME SECCTION-->
+        <section id="welcome-section" class="welcome-section">
+            <h1>Hi, I am Axel</h1>
+            <p>a web developer</p>
+            <p class="other-p">and</p>
+            <p>a music composer</p>
+        </section>
+        <!--PROYECTS SECCTION-->
+        <section id="projects" class="project-section">
+            <h2>Look my projects</h2>
+            <div class="project-grid">
+                <a
+                href="https://codepen.io/axelarielsaravia/pen/oNZmERR"
+                target="_blank"
+                class="project"
+                >
+                    <img
+                        class="project-image"
+                        src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg"
+                        alt="documentation-page"
+                    />
+                    <p class="project-title">
+                        Documentation page
+                    </p>
+                </a>
+                <a
+                href="https://codepen.io/axelarielsaravia/pen/NWpeVGG"
+                target="_blank"
+                class="project"
+                >
+                    <img
+                        class="project-image"
+                        src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg"
+                        alt="product-landing-page"
+                    />
+                    <p class="project-title">
+                        Product Landing Page
+                    </p>
+                </a>
+                <iframe
+                scrolling="no" 
+                frameborder="no" 
+                allow="autoplay" 
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1264953181&color=%23c0c0c0&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                >
+                </iframe>
+                <iframe 
+                style="border: 0;" 
+                src="https://bandcamp.com/EmbeddedPlayer/album=649677191/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" 
+                
+                >
+                    <a href="https://axarisar.bandcamp.com/album/tres-piezas-muy-cortas">
+                        Tres piezas muy cortas by AxAriSar
+                    </a>
+                </iframe>
+            </div>
+        </section>
+        <!--CONTACT SECCTION-->
+        <section id="contact" class="contact-section">
+            <div class="contact-section-header">
+                <h2>Let's work together...</h2>
+                <div>
+                    <p>
+                        <i class="fas fa-envelope"></i>
+                        axelarielsaravia@gmail.com
+                    </p>
+                </div>
+                
+            </div>
+            <div class="contact-links">
+                <a
+                  href="https://www.instagram.com/axarisar/"
+                  target="_blank"
+                  class="profile-link"
+                >   
+                    <i class="fab fa-instagram"></i>
+                    Instagram
+                </a>
+                <a
+                  id="profile-link"
+                  href="https://github.com/AxelArielSaravia"
+                  target="_blank"
+                  class="profile-link"
+                >
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a
+                  href="https://soundcloud.com/axarisar"
+                  target="_blank"
+                  class="profile-link"
+                >
+                    <i class="fab fa-soundcloud"></i>
+                    SoundCloud
+                </a>
+                <a 
+                href="https://axarisar.bandcamp.com"
+                target="_blank"
+                class="profile-link"
+                >
+                    <i class="fab fa-bandcamp"></i>
+                    BandCamp
+                </a>
+            </div>
+        </section>
+    </main>
+    <!--FOOTER SECTION -->
+    <footer>
+        <p>&copy; Created for Axel Ariel Saravia</p>
+    </footer>
+    <script>
+        const $hamBtn = document.querySelector('.ham-btn'),
+        $nav = document.querySelector('.nav');
+
+        const openCloseHam = () =>{
+            //for Hamburger btn
+            if ( $hamBtn.classList.contains("ham-x") ){
+                $hamBtn.classList.remove("ham-x");
+                $nav.classList.add('hidden')
+            }else{
+                $hamBtn.classList.add("ham-x");
+                $nav.classList.remove('hidden')
+            } 
+        }
+        document.addEventListener('click', e => {
+            if( e.target.matches('.ham-btn') || e.target.matches('.ham-btn *')) openCloseHam();
+        });
+
+    </script>
+</body>
+</html>

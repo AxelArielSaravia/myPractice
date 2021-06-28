@@ -1,0 +1,24 @@
+{
+  "name": "mongodb-test",
+  "version": "0.0.1",
+  "description": "A test to use mongoDB and mongoose",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "startDemon": "nodemon server.js"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "mongoose",
+    "freeCodeCamp"
+  ],
+  "author": "axarisar",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.14"
+  }
+}

@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/** global classes styling **/
+html{
+  color: #18030f;
+  background-image: linear-gradient(to top left, #f7ecfa , #cbccda);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+body {
+    width: 100%;
+    height: auto;
+}
+
+#main-doc{
+    position: absolute;
+}
+
+
+.flex{
+    display: flex;
+}
+
+
+/** ham menu **/
+.container {
+    display: none;
+    cursor: pointer;
+    position: fixed;
+    z-index: 3000;
+    top: 10px;
+    left: 10px;
+}
+  
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #18030f;
+    border-radius: 40px;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+.change .bar2 {opacity: 0;} 
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+}
+
+/** nav **/
+.navbar{
+    visibility: visible;
+    opacity: 1;
+    left: 0
+}
+#navbar {
+    position: fixed;
+    z-index: 100;
+    width: 25%;
+    min-width: 220px;
+    max-width: 380px;
+    top: 0px;
+    height: 100%;
+    background-color: #a39b9f;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#navbar header {
+    margin: 10px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+#navbar ul{
+    cursor: pointer;
+}
+#navbar li {
+    list-style: none;
+}
+#navbar a {
+    border-top: 2px solid #a38395;
+    display: block;
+    padding: 10px;
+    width: 100%;
+    color: #18030f;
+    font-weight: 600;
+    text-decoration: none;
+}
+#navbar a:hover{
+    color: #f7ecfa;
+    transition: all 350ms ease;
+}
+
+/** main section **/
+.main-section{
+    position: relative;
+    top: 0px;
+    right: 0px;
+    left: 35%;
+    width: 65%;
+    height: 100%;
+    padding: 40px;
+}
+
+.main-section header{
+    font-size: 2em;
+    font-weight: 700;
+    border-bottom: 0.1em solid #a38395 ;
+}
+
+section article {
+    margin: 20px;
+}
+section p {
+    text-indent: 20px;
+}
+section li {
+    margin: 15px 0px;
+}
+  
+code {
+    display: block;
+    white-space: pre-line;
+    position: relative;
+    font-family: monospace;
+    line-height: 2;
+    background-color: #e6e3e3;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+/** phone **/
+@media only screen and (max-width: 680px){
+    /** hamnav **/
+    .container {
+        display: block;
+    }
+
+    /** nav **/
+    .navbar{
+        visibility: hidden;
+        opacity: 0;
+        left: -150px;
+        transition: all 500ms ease;
+    }
+    .visible{
+        visibility: visible;
+        opacity: 80%;
+        left: 0;
+    }
+    #navbar{
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        
+    }
+    #navbar a {
+        text-align: center;
+    }
+    #navbar a:hover, #navbar a:focus{
+        background-color: #18030f;
+        color: #f7ecfa;
+    }
+
+    /** main section **/
+    .main-section{
+        left: 10px;
+        width: 95%;
+    }
+}

@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <link rel="stylesheet" href="survey-form.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+             <h1 id="title" class="text-center">CocoStudio Encuesta</h1>
+             <p id="description" class="description text-center">Estamos agradecidos de que te tomes un tiempo para realizar esta encuesta</p>
+         </header>
+         <form id="survey-form" >
+             <div class="form-group" >
+                 <label for="name">Nombre</label>
+                 <input type="text" class="form-control" id="name" name="name" placeholder="Escriba su nombre" required>
+             </div>
+             <div class="form-group" >
+                 <label for="email">Email</label>
+                 <input type="email" class="form-control" id="email" name="email" placeholder="Escriba su nombre" required>
+             </div>
+             <div class="form-group" >
+                 <label for="age">Edad</label>
+                 <input type="number" class="form-control" id="age" name="age" placeholder="Escriba su edad" required min="15" max="90">
+             </div>
+             <div class="form-group" >
+                 <label for="dropdown">Conoces CocoStudio</label>
+                 <select name="situation" class="form-control" id="dropdown" required>
+                     <option disabled selected value>Seleccione una opción</option>
+                     <option value="student">Soy estudiante</option>
+                     <option value="full-time-job">Fui cliente</option>
+                     <option value="part-time-job">Los vi en instagram</option>
+                     <option value="other">Un amigo los conoce</option>
+                     <option value="not">No los conozco de nada</option>
+                 </select>
+             </div>
+             <div class="form-group" >
+                 <p>¿Recomendarias CocoStudio a otra persona?</p>
+                 <label>
+                     <input type="radio" class="input-radio" name="user-recommend" value="yeas" class="" checked>
+                     Si
+                 </label>
+                 <label>
+                     <input type="radio" class="input-radio" name="user-recommend" value="perhaps" class="" >
+                     Tal vez
+                 </label>
+                 <label>
+                     <input type="radio" class="input-radio" name="user-recommend" value="dont-know" class="" >
+                     no lo sé
+                 </label>
+                 <label>
+                     <input type="radio" class="input-radio" name="user-recommend" value="no" class="" >
+                     No
+                 </label>
+             </div>
+             <div class="form-group" >
+                 <p>¿Qué te gustaria ver más en CocoStudio?</p>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="more DAW tutorials" class="" >
+                      Tutoriales de cómo usar un DAW
+                 </label>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="analysis" class="" >
+                      Análisis de musicas
+                 </label>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="productions" class="" >
+                      Nuestras producciones
+                 </label>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="theory" class="" >
+                      Teoría musical
+                 </label>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="plugins" class="" >
+                      Plugins y otras recomendaciones
+                 </label>
+                 <label>
+                     <input type="checkbox" class="input-checkbox" name="user-prefer" value="live streams" class="" >
+                    Live streams
+                </label>
+            </div>
+            <div class="form-group" >
+                <p>Escribe si tienes algun comentario o sugerencia para nosotros</p>
+                <textarea name="comment" class="input-textarea" id="comments"></textarea>
+            </div>
+            <div class="form-group" >
+                <input type="submit" class="form-control submit-btn" id="submit" name="submit">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

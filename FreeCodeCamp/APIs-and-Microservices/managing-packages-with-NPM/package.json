@@ -1,0 +1,21 @@
+{
+	"name": "fcc-learn-npm-package-json",
+	"dependencies": {
+		"moment": "2.14.0",
+		"moment2": "~2.10.0",
+		"express": "^4.14.0"
+	},
+	"main": "server.js",
+	"author": "Axel Ariel Saravia",
+	"description": "this is a test, I'm learn node.js",
+	"keywords": ["test", "learn", "descriptive", "freecodecamp"],
+	"license": "MIT",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://idontknow/todo.git"
+	},
+	"version": "0.0.1"
+}
