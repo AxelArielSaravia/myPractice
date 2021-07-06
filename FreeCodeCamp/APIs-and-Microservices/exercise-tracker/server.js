@@ -2,10 +2,12 @@
 //***************************************************************************//
 // 1) You can POST to /api/users with form data username to create a new user. The returned response will be an object with username and _id properties.
 // 2) You can make a GET request to /api/users to get an array of all users. Each element in the array is an object containing a user's username and _id.
-// 3) You can make a GET request to /api/users to get an array of all users. Each element in the array is an object containing a user's username and _id.
-// 4) You can make a GET request to /api/users/:_id/logs to retrieve a full exercise log of any user. The returned response will be the user object with a log array of all the exercises added. Each log item has the description, duration, and date properties.
-// 5) A request to a user's log (/api/users/:_id/logs) returns an object with a count property representing the number of exercises returned.
-// 6) You can add from, to and limit parameters to a /api/users/:_id/logs request to retrieve part of the log of any user. from and to are dates in yyyy-mm-dd format. limit is an integer of how many logs to send back.
+// 3) You can make a GET request to /api/users/:_id/logs to retrieve a full exercise log of any user. 
+//    The returned response will be the user object with a log array of all the exercises added. 
+//    Each log item has the description, duration, and date properties.
+// 4) A request to a user's log (/api/users/:_id/logs) returns an object with a count property representing the number of exercises returned.
+// 5) You can add from, to and limit parameters to a /api/users/:_id/logs request to retrieve part of the log of any user. 
+//    from and to are dates in yyyy-mm-dd format. limit is an integer of how many logs to send back.
 
 
 const express = require('express');
@@ -68,9 +70,8 @@ app.route('/api/users')
   });
 })
 .post( async ( req, res, next ) => {
-  let username = req.body.username;
-
   try{
+    let username = req.body.username;
     if( username === "" ) return res.send("You don't create any user");
 
     let doc = await user.findOne({ username: username })
@@ -100,6 +101,7 @@ app.post('/api/users/:_id/exercises', ( req, res ) => {
  
   ( req.body.date === "" ) ? date = new Date().toDateString() : date = new Date(req.body.date).toDateString();
 
+  //session object
   let newSession = {
     description: description,
     duration: duration,
@@ -126,18 +128,16 @@ app.get('/api/users/:_id/logs', ( req, res, next) => {
   user.findById(id).exec(( err, doc ) => {
     if( err ) return res.send("The id doesn't exist");
 
-    //menssagge
+    //menssage
     let resObj = {
       _id: doc._id,
       username: doc.username,
-      count: 0,
+      count: null,
       log: doc.log
     };
 
     //query limit
-    if( req.query.limit ){
-      resObj.log = resObj.log.slice(0, req.query.limit);
-    }
+    if( req.query.limit ) resObj.log = resObj.log.slice(0, req.query.limit);
 
     //guery from or to
     if( req.query.from || req.query.to ){
