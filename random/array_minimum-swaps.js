@@ -14,15 +14,16 @@ let myArr1 = [ 9, 3, 4, 1, 5 ]; //[5, 3, 4, 1, 9] //[ 1, 3, 4, 5, 9]
 let myArr2 = [ 1, 3, 5, 2, 4, 6, 7 ];//[1,3,4,2,5,6,7] //[1,2,4,3,5,6,7]
 let myArr3 = [ 4, 3, 1, 2 ];//[2, 3, 1, 4] //[1,3,2,4]//[1,2,3,4]
 let myArr4 = [1, 0, 4];//[0,1,4]
-let myArr5 = [4, 87, -5, 792, 0]
+let myArr5 = [4, 87, -5, 792, 0]; //[0,87,-5,792,4]//[0,4,-5,792,87]//[0,4,-5,87,792]//[-5,4,0,87,792]//[-5,0,4,87,792]
+
 
 //random array
 const set = new Set([]);
 for(let i = 0; i < 1000; i++) {
-    set.add(parseInt(Math.random() * 1000 + 1));
+    set.add( parseInt( Math.random() * 1000 + 1 ) );
 }
 let randomArray = Array.from(set);
-//
+
 
 
 function minimumSwaps(arr) {

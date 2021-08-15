@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
+html {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 62.5%;
+  background-color: #ebe1e1;
+}
+
+*, *::before, *::after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main .container {
+  width: 100rem;
+  height: 50rem;
+  padding: 2rem;
+  background-color: #f0ede9;
+  font-family: 'Fjalla One', sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 4rem;
+  -webkit-box-shadow: 5px 1px 15px;
+          box-shadow: 5px 1px 15px;
+}
+
+.main .container #title {
+  margin: 1rem;
+  font-size: 3rem;
+}
+
+#tooltip {
+  padding: 1rem;
+  background-color: #413737;
+  color: #aaa;
+  font-size: 1.3rem;
+  border-radius: 1rem;
+}
+/*# sourceMappingURL=style.css.map */
