@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
+html{
+    box-sizing: border-box;
+    font-size: 62.5%;
+    background-image: linear-gradient(to right, #b4b1b1, #c6dddb);
+}
+
+*, *::before, *::after{
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+main{
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        padding: 2rem;
+        border-radius: 20px;
+        
+    
+        #title{
+            font-size: 3rem;
+            font-weight: 900;
+        }
+        #subtitle{
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .svg{
+            background-color: #beb2b283;
+            border-radius: 2rem;
+        }
+    
+    }
+}
+
+.dot:hover{
+    cursor: pointer;
+    opacity: 0.8;
+    fill: #917b7b;
+}
+
+#tooltip{
+    font-size: 1.2rem;
+    background-color: #977e7ec9;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+
+
+@media all and (min-width: 900px) {
+    #title{
+        font-size: 1rem;
+        font-weight: 400;
+    }
+}
+

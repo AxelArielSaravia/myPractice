@@ -95,12 +95,14 @@ function visualizationData (data) {
                
                 tooltip.transition().duration(170).style('opacity', 0.9);
                 tooltip.html(
-                            $bar.getAttribute('data-date') + '<br>' + Math.trunc($bar.getAttribute('data-gdp')) + ' Billions'
+                            $bar.getAttribute('data-date') + 
+                            '<br>' +
+                            '$ ' + Math.trunc($bar.getAttribute('data-gdp')) + ' Billions'
                         )
                 tooltip.attr('data-date', $bar.getAttribute('data-date'))
                         .style('position', 'absolute')
-                        .style('left', parseInt($bar.getAttribute('x'))+ 150 + 'px')
-                        .style('top', parseInt($bar.getAttribute('y')) - 30 + 'px')
+                        .style('left', e.pageX - 30 + 'px')
+                        .style('top', e.pageY - 60 + 'px')
                         .style('transform', 'translateX(60px)');
 
             }

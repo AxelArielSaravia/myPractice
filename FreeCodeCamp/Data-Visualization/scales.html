@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>D3 SCALES</title>
+    <style>
+        .title{
+            margin-top:30px ;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .rects:hover{
+            fill: #100;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Fruits</div>
+    <script>
+        const fruits = [
+            {name: "🍊", count: 21},
+            {name: "🍇", count: 13},
+            {name: "🍏", count: 8},
+            {name: "🍌", count: 5},
+            {name: "🍐", count: 3},
+            {name: "🍋", count: 2},
+            {name: "🍎", count: 1},
+            {name: "🍉", count: 1}
+        ]
+
+        const margin = {
+            top: 50,
+            right: 20,
+            bottom: 30,
+            left: 60
+        };
+
+        const width = 900;
+        const height = 400;
+
+        const fCounts = fruits.map(d => d.count);
+        const fName = fruits.map(d => d.name);
+
+        const x = d3.scaleLinear()
+            .domain([0, d3.max(fruits, d => d.count)])
+            .range([margin.left, width - margin.right])
+            .interpolate(d3.interpolateRound);
+        const xAxis = d3.axisTop(x)
+
+        const y = d3.scaleBand()
+            .domain(fruits.map(d => d.name))
+            .range([margin.top, height - margin.bottom])
+            .padding(0.1)
+            .round(true);
+        const yAxis = d3.axisLeft(y)
+
+        const color = d3.scaleSequential()
+            .domain([0, d3.max(fruits, d => d.count)])
+            .interpolator(d3.interpolateBlues);
+
+        const textColor = d3.scaleSequential()
+            .domain([d3.max(fruits, d => d.count), 0])
+            .interpolator(d3.interpolateGreens);
+
+        const svg1 = d3.select('body')
+            .append('svg')
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .attr('class', 'svg');
+        
+
+        svg1.selectAll('rect')
+            .data(fruits).enter()
+            .append('rect')
+            .attr('class', 'rects')
+            .attr('x', d => x(0))
+            .attr('y', d => y(d.name) )
+            .attr('width', d => x(d.count) - margin.left)
+            .attr('height', d => y.bandwidth())
+            .attr('fill', d => color(d.count))
+            .attr('text', d => d.count);
+
+        svg1.selectAll('text')
+            .data(fruits).enter()
+            .append('text')
+            .attr('y', d => y(d.name) + 23)
+            .attr('x', d => (d.count > 10)? x(d.count) - 18 : x(d.count) - 10)
+            .attr('fill', d => textColor(d.count))
+            .text(d => d.count);
+        
+        svg1.selectAll('circle')
+            .data(fruits).enter()
+            .append('cirlce')
+            .attr('cy', d => y(d.name))
+            .attr('cx', d => x(d.count))
+            .attr('r', 2.5)
+            .attr('fill', '#333');
+            
+        svg1.append('g')
+            .attr('transform', `translate(0, ${margin.top})`)
+            .call(xAxis);
+
+        svg1.append('g')
+            .attr('transform', `translate(${margin.left}, 0)`)
+            .call(yAxis);
+
+
+    </script>
+</body>
+</html>
