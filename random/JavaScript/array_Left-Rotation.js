@@ -14,11 +14,28 @@
 let array = [1,2,3,4,5];
 let rotaciones = 3;
 
-function rotLeft(a, d) {
+function rotLeft(array, d) {
+    
+    let a = Array.from(array);
     for( let i = 0; i < d; i++ ){
         a.push(a.shift());
     }
-    return console.log(a);
+    return a;
 }
 
-rotLeft(array, rotaciones);
+
+/* recursive function */
+function rotLeft2(array, rotation) {
+    let a = Array.from(array);
+    
+    //BASIC CASE
+    if( rotation <= 0 ) return a;
+
+    //RECUSRIVE CASE
+    //action
+    a.push(a.shift());
+    //recursion
+    return rotLeft2(a, rotation-1);
+}
+
+console.log(rotLeft2(array, rotaciones))
