@@ -1,0 +1,7 @@
+compile:
+	gcc -Wall -pedantic -Werror -std=c17 -g main.c -o mainExe
+
+run:
+	./mainExe
+test: 
+	gdb mainExe

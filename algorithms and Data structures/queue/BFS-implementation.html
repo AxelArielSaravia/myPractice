@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BREADTH FIRST SEARCH</title>
+</head>
+<body>
+    <h1>BREADTH FIRST SEARCH</h1>
+    <div>
+        <button onclick="BFS('start', 'finish')">Start</button>
+    </div>
+    <main id="start">
+        <section id="section1">
+            <div id="section1_div1"></div>
+            <div id="section1_div2">
+                <div id="section1_div2_div1"></div>
+                <div id="section1_div2_div2"></div>
+                <div id="section1_div2_div3">
+                    <div id="finish"></div>
+                </div>
+            </div>
+        </section>
+        <section id="section2">
+            <div id="section2_div1">
+                <div id="section2_div1_div1"></div>
+                <div id="section2_div1_div2"></div>
+            </div>
+            <div id="section2_div2">
+                <div id="section2_div2_div1"></div>
+                <div id="section2_div2_div2">
+                    <div id="finish"></div>
+                </div>
+                <div id="section2_div2_div3"></div>
+                <div id="section2_div2_div4"></div>
+            </div>
+            <div id="section2_div3">
+                <div id="finish"></div>
+            </div>
+            <div id="section2_div4">
+                <div id="section2_div4_div1"></div>
+            </div>
+        </section>
+        <section id="section3"></section>
+        <section id="section4">
+            <div id="section4_div1">
+                <div id="section4_div1_div1"></div>
+                <div id="section4_div1_div2"></div>
+                <div id="section4_div1_div3"></div>
+                <div id="section4_div1_div4"></div>
+                <div id="section4_div1_div5">
+                    <div id="finish"></div>
+                </div>
+           </div>
+        </section>
+    </main>
+    <script>
+        class DynamicQueue {
+            #queue;
+            /**
+             * @param {Array} queue 
+             */
+            constructor(queue) {
+                this.#queue = queue || [];
+                this.length =  this.#queue.length;
+            }
+
+            enQueue(n) {
+                try {
+                    this.#queue.push(n);
+                    this.length = this.#queue.length;
+                    return true;
+                }
+                catch (err) {
+                    console.error(err);
+                    return false;
+                }
+            }
+
+            deQueue() {
+                if (this.isEmpty()) return false;
+                else {
+                    this.#queue.shift();
+                    this.length = this.#queue.length;
+                    return true;
+                } 
+            }
+
+            isEmpty() { return this.length === 0 };
+
+            head() {
+                return this.#queue[0];
+            }
+            
+            queue() {
+                let obj = {}
+                this.#queue.forEach( (el, i) => {
+                    obj[`_${i}`] = el;
+                })
+                return obj;
+            }
+        }
+        
+        function BFS(root, target) {
+            let queue = new DynamicQueue();
+            let step = 0;
+            queue.enQueue(root);
+
+            while (!queue.isEmpty()) {
+                let size = queue.length;
+                for (let i = 0; i < size; i++) {
+                    let cur = queue.head();
+                    if (cur === target) {
+                        console.log(step);
+                        return step;
+                    }
+                    let element = document.getElementById(cur);
+                    console.log(element)
+                    for (let child of element.children) {
+                        queue.enQueue(child.id)
+                    }
+                    queue.deQueue();
+                }
+                step++;
+            }
+            console.log(-1)
+            return -1;
+        }
+
+    </script>
+</body>
+</html>
