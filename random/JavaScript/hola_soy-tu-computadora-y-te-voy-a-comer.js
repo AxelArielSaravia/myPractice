@@ -1,12 +1,13 @@
+/*
+* use in the browser
+*/
+
+var text = 'Hi, I am your computer, I want to eat you';
+
 /**
- * use in the browser
+ * @param {string} text 
+ * @returns 
  */
+var speak = (text) => speechSynthesis.speak(new SpeechSynthesisUtterance(text));
 
-console.log(window);
-console.log(document);
-
-var texto = 'Hi, I am your computer, I want to eat you';
-
-var hablar = ( function(texto){ return speechSynthesis.speak(new SpeechSynthesisUtterance(texto))});
-
-hablar(texto);
+speak(text);

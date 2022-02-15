@@ -8,8 +8,13 @@ class Stack {
      */
     constructor(stack) {
         this.#stack = stack || [];
-        this.length = this.#stack.length;
     }
+
+    /**
+     * @returns {number}
+     */
+    get length() {return this.#stack.length}
+
     /**
      * @param {Any} x 
      * @returns {bool}
@@ -58,18 +63,11 @@ class Stack {
 class DynamicStack {
     #val;
     #next;
-    constructor(...vals) {
-        this.#val = null;
-        this.#next = null;
-        
-        if (vals.length > 0) {
-           let list = DynamicStack.fromArray(vals);
-           this.#val = list.#val;
-           this.#next = list.#next;
-           list = null;
-        }
-    }
     
+    /**
+     * @param {Array} arr 
+     * @returns {DynamicStack | false}
+     */
     static fromArray(arr) {
         try {
             let list = new DynamicStack();
@@ -88,6 +86,25 @@ class DynamicStack {
         }
     }
 
+    /**
+     * @param  {...any} vals 
+     */
+    constructor(...vals) {
+        this.#val = null;
+        this.#next = null;
+        
+        if (vals.length > 0) {
+           let list = DynamicStack.fromArray(vals);
+           this.#val = list.#val;
+           this.#next = list.#next;
+           list = null;
+        }
+    }
+    
+
+    /**
+     * @return {{value, next}}
+     */
     get view() {
         let obj = { value: this.#val, next: this.#next };
         let objNext = obj.next;
@@ -101,6 +118,9 @@ class DynamicStack {
         return obj;
     }
 
+    /**
+     * @returns {number}
+     */
     get length() {
         let n = 0;
         let listNext = (this.isEmpty()? null : this);
@@ -111,16 +131,29 @@ class DynamicStack {
         return n;
     }
     
+    /**
+     * @returns {any}
+     */
     get top() { return this.#val; }
 
+    /**
+     * @returns {any}
+     */
     get bottom() { 
         let listNext = (this.isEmpty()? null : this);
         while (listNext.#next !== null) listNext = listNext.#next;
         return listNext.#val; 
     }
     
+    /**
+     * @returns {bool}
+     */
     isEmpty() { return (this.#val === null && this.#next === null); }
 
+    /**
+     * @param {*} value 
+     * @returns {bool}
+     */
     push(value) {
        try {
            if (this.isEmpty()) this.#val = value;
@@ -139,6 +172,9 @@ class DynamicStack {
         }
     }
     
+    /**
+     * @returns {bool} 
+     */
     pop() {
         if (this.isEmpty()) return false;
         if (this.#next === null) this.#val = null;
@@ -149,6 +185,9 @@ class DynamicStack {
         return true;
     }
     
+    /**
+     * @returns {Object | false} 
+     */
     toObject() {
         let obj = {}
         let listNext = (this.isEmpty()? null : this);
@@ -161,6 +200,9 @@ class DynamicStack {
         return obj;
     }
 
+    /**
+     * @returns {Array}
+     */
     toArray() {
         let arr = [];
         let listNext = (this.isEmpty()? null : this);
@@ -170,6 +212,14 @@ class DynamicStack {
         }
         return arr;
     }
+
+    toString() {
+        let str = "";
+        let listNext = (this.isEmpty()? null : this);
+        while (listNext !== null) {
+            str = listNext.#val + "" + str;
+            listNext = listNext.#next;
+        }
+        return str;
+    }
 }
-
-

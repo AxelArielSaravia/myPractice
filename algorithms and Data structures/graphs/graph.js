@@ -79,6 +79,26 @@ class Graph {
     #id;
     #degree;
     #size;
+
+    static concat(targetGraph, ...graphs) {
+        try {
+            if (targetGraph !== undefined) {
+                if (graphs === undefined || graphs.length === 0) return targetGraph;
+                graphs.forEach(graph => {
+                   let nodes = Object.keys(graph.nodes);
+                   let links = Object.keys(graph.links);
+                   console.log(nodes, links)
+                });
+                return targetGraph;
+            } else {
+                throw new Error("the first parameter must to be set");
+            }
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
     /**
      * @param  {...Node} nodes 
      */
@@ -96,7 +116,14 @@ class Graph {
         }
     }
 
+    /**
+     * @return {number}
+     */
     get size() { return this.#size}
+
+    /**
+     * @return {number}
+     */
     get degree() { return this.#degree}
 
     /**
@@ -243,12 +270,24 @@ class Graph {
         }
     }
 
+    get(nodeId) {
+        let links = this.links[nodeId] || null;
+        return {node: this.nodes[nodeId], links}
+    }
+
     clean() {
         this.nodes = {};
         this.links = {};
         this.#degree = 0;
         this.#size = 0;
         this.#id = 0;
+    }
+
+    copy() {
+        let copyGraph = new Graph();
+        let nodes = Object.keys(this.nodes);
+        
+        return copyGraph;
     }
 } 
 

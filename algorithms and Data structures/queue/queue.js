@@ -3,6 +3,7 @@
  */
 export class Queue {
     #queue;
+    
     /**
      * @param {Array} queue 
      */
@@ -10,6 +11,7 @@ export class Queue {
         this.#queue = queue || [];
         this.length =  this.#queue.length;
     }
+
     /**
      * @param {*} n 
      * @returns {bool}
@@ -146,7 +148,7 @@ export class FixedQueue {
 export class DynamicQueue {
     #val;
     #next;
-
+    
     /**
      * @param  {...any} vals 
      */
@@ -163,28 +165,6 @@ export class DynamicQueue {
     }
 
     /**
-     * @param {Array} arr 
-     * @returns {DynamicQueue | false}
-     */
-    static fromArray(arr) {
-        try {
-            let list = new DynamicQueue();
-            list.#val = (arr[0] === undefined)? null: arr[0];
-            let nextList = list;
-            
-            for (let i = 1; i < arr.length; i++) {
-                nextList.#next = new DynamicQueue();
-                nextList = nextList.#next;
-                nextList.#val = arr[i];
-            }
-            return list;
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
-    }
-    
-    /**
      * @returns {Object}
      */
     get view() {
@@ -200,6 +180,9 @@ export class DynamicQueue {
         return obj;
     }
 
+    /**
+     * @return {*}
+     */
     get head() { return this.#val; }
     
     /**
