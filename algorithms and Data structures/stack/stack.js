@@ -1,7 +1,7 @@
 /**
  * Use Array
  */
-class Stack {
+class ArrayStack {
     #stack
     /**
      * @param {Array} stack 
@@ -15,30 +15,21 @@ class Stack {
      */
     get length() {return this.#stack.length}
 
-    /**
-     * @param {Any} x 
-     * @returns {bool}
-     */
-    push(x) {
+    clear() { 
         try {
-            this.#stack.push(x);
-            this.length = this.#stack.length;
+            this.#stack = [];
             return true;
         } catch (err) {
             console.error(err);
             return false;
-        } 
-    }
+        }
+     }
 
+    
     /**
      * @returns {bool}
      */
     isEmpty() { return this.length === 0 }
-
-    /**
-     * @returns {Any}
-     */
-    top() {return this.#stack[this.length-1]}
 
     /**
      * @returns {bool}
@@ -46,36 +37,48 @@ class Stack {
     pop() {
         if (this.isEmpty()) return false;
         this.#stack.pop();
-        this.length = this.#stack.length;
         return true;
     }
 
-    getMin() {
-        return this.#stack.reduce((acc, el) => {
-            return acc = Math.min(el, acc);
-        })
+    /**
+     * @param {Any} x 
+     * @returns {bool}
+     */
+    push(x) {
+        try {
+            this.#stack.push(x);
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        } 
     }
+    
+    /**
+     * @returns {Any}
+     */
+    top() {return this.#stack[this.length-1]}
 }
 
 /**
  * Use ListNode
  */
-class DynamicStack {
+class NodeStack {
     #val;
     #next;
     
     /**
      * @param {Array} arr 
-     * @returns {DynamicStack | false}
+     * @returns {NodeStack | false}
      */
     static fromArray(arr) {
         try {
-            let list = new DynamicStack();
+            let list = new NodeStack();
             list.#val = (arr[arr.length-1] === undefined)? null: arr[arr.length-1];
             let nextList = list;
 
             for (let i = arr.length-2; i >= 0; i--) {
-                nextList.#next = new DynamicStack();
+                nextList.#next = new NodeStack();
                 nextList = nextList.#next;
                 nextList.#val = arr[i];
             }
@@ -94,13 +97,12 @@ class DynamicStack {
         this.#next = null;
         
         if (vals.length > 0) {
-           let list = DynamicStack.fromArray(vals);
+           let list = NodeStack.fromArray(vals);
            this.#val = list.#val;
            this.#next = list.#next;
            list = null;
         }
     }
-    
 
     /**
      * @return {{value, next}}
@@ -158,7 +160,7 @@ class DynamicStack {
        try {
            if (this.isEmpty()) this.#val = value;
            else {
-               let newList = new DynamicStack(this.#val);
+               let newList = new NodeStack(this.#val);
                newList.#next = this.#next;
     
                this.#val = value;
@@ -221,5 +223,107 @@ class DynamicStack {
             listNext = listNext.#next;
         }
         return str;
+    }
+}
+
+
+class ObjectStack {
+    #length;
+    #stack;
+
+    /**
+     * @param {Array} arr 
+     */
+     static fromArray(arr) {
+        try {
+            let stack = new ObjectStack();
+            for (let i = 0; i < arr.length; stack.push(arr[i++]));
+            return stack;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    constructor(...vals) {
+        this.#length = 0;
+        this.#stack = {};
+
+        if (vals.length > 0) {
+            let stack = ObjectStack.fromArray(vals);
+            this.#length = stack.#length;
+            this.#stack = stack.#stack;
+            stack = null;
+        }
+    }
+
+    /**
+     * @returns {boolean}
+     */ 
+    get length() { return this.#length } 
+
+    /**
+     * @return {undefined | any}
+     */
+    get top() { return this.isEmpty() ? undefined : this.#stack[this.#length - 1] }
+
+    /**
+     * @returns {boolean} 
+     */
+    isEmpty() { return this.#length === 0 }
+
+    /** 
+     * @param {*} x 
+     * @returns {boolean}
+     */
+    push(x) {
+        try {
+            this.#stack[this.#length] = x;
+            this.#length++;
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    /**
+     * @returns {* | false} 
+     */
+    pop() {
+        if (this.isEmpty()) return false 
+
+        this.#length--;
+        let res = this.#stack[this.#length];
+        delete this.#stack[this.#length];
+        return res;
+    }
+
+    clear() {
+        this.#length = 0;
+        this.#stack = {};
+    }
+
+    toArray() {
+        try {
+            if (this.isEmpty()) return [];    
+            return Object.values(this.#stack);
+
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    toString() {
+        try {
+            let str = "";
+            if (this.isEmpty()) return str;
+            for (let i = 0; i < this.#length; i++) str += this.#stack[i];
+            return str;
+        } catch(err) {
+            console.error(err);
+            return false;
+        }
     }
 }

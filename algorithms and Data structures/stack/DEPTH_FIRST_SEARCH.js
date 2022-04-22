@@ -1,4 +1,4 @@
-import {DynamicStack} from "./stack";
+import { NodeStack } from "./stack";
 
 
 const ProjectName = "DEAPT FIRST SEARCH";
@@ -125,9 +125,9 @@ const DEAPT_FIRST_SEARCH_IMPERATIVE_1 = (rootNode) => {
     return /*something */ "We go through all nodes";
 }
 
-//Stack is an DynamicStack
+//Stack is an NodeStack
 const DEAPT_FIRST_SEARCH_IMPERATIVE_2 = (rootNode) => {
-    const stack = new DynamicStack();
+    const stack = new NodeStack();
     const visited = new Set();
 
     stack.push(rootNode);

@@ -1,339 +1,193 @@
-import {DynamicQueue} from '../queue/queue.mjs'
-import {DynamicStack} from '../stack/stack'
 
-class Node {
-    /**
-     * @param {*} value 
-     * @param {string | number} id 
-     * @param {...Node} neighbors 
-     */
-    constructor(value, id, ...neighbors) {
-        this.value = (value === undefined ? null : value);
-        this.neighbors = new Map();
+class Graph {
+  #VERTICES;
+  #IS_DIRECTED;
+  #ADJ_LIST;
+  constructor(isDirected = false) {
+    this.#IS_DIRECTED = isDirected;
+    this.#VERTICES = new Set();
+    this.#ADJ_LIST = new Map();
+  }
 
-        Object.defineProperty(this, 'id', {enumerable: true, value: id});
+  get isDirected() { return this.#IS_DIRECTED }
+  get vertices() { return this.#VERTICES }
+  get adjList() { return this.#ADJ_LIST }
+  
+  hasVertex(v) { return this.#VERTICES.has(v) }
 
-        if (neighbors !== undefined && neighbors.length > 0) {
-            this.link(...neighbors);
-        }
+  getVertex(v) { return this.hasVertex(v) ?  `${v} -> ${[...this.#ADJ_LIST.get(v)].join(" ")}` : undefined }
+
+  addVertex(v) {
+    if (this.hasVertex(v)) return;
+    this.#VERTICES.add(v);
+    this.#ADJ_LIST.set(v, new Set());
+  }
+
+  addEdge(v, w) {
+    if (!this.hasVertex(v)) this.addVertex(v);
+    if (!this.hasVertex(w)) this.addVertex(w);
+    this.#ADJ_LIST.get(v).add(w);
+    if (!this.isDirected) this.#ADJ_LIST.get(w).add(v);
+  }
+
+  deleteVertex(v) {
+    if (this.hasVertex(v)) {
+      this.#ADJ_LIST.get(v).forEach(element => {
+        this.deleteEdge(element, v, true);
+      });
+      this.#ADJ_LIST.delete(v);
+      this.#VERTICES.delete(v);
     }
+  }
 
-    /**
-     * @param  {...Node} neighbors 
-     * @returns {bool}
-     */
-    link(...neighbors) {  
-        try {
-            if (this.id !== undefined && neighbors !== undefined && neighbors.length > 0) {
-                for (let neighbor of neighbors) {
-                    if (neighbor.id !== undefined && !this.neighbors.has(neighbor.id)) {
-
-                        this.neighbors.set(neighbor.id, neighbor);
-                        neighbor.neighbors.set(this.id, this);
-                    }
-                }
-                return true;
-            }
-            return false;
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
+  deleteEdge(v, w, isDirected = false) {
+    if (this.hasVertex(v) && this.hasVertex(w)) {
+      this.#ADJ_LIST.get(v).delete(w);
+      
+      if (!this.isDirected && !isDirected) {
+        this.#ADJ_LIST.get(w).delete(v);
+      }
     }
+  }
 
-    /**
-     * @param  {...Node} neighbors 
-     * @returns {bool}
-     */
-    unlink(...neighbors) {
-        try {
-            if (this.id !== undefined && neighbors !== undefined && neighbors.length > 0) {
-                for (let neighbor of neighbors) {
-                    if (neighbor.id !== undefined && this.neighbors.has(neighbor.id)) {
-                        this.neighbors.delete(neighbor.id);
-                        neighbor.neighbors.delete(this.id);
-                    }
-                }
-                return true;
-            }
-            return false;
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
-    }
+  clear() {
+    this.#VERTICES = new Set();
+    this.#ADJ_LIST = new Map();
+  }
 
-    /**
-     * @returns {Node}
-     */
-    copy() {
-        let newNode = new Node(this.value, this.id);
-        newNode.neighbor = new Map(this.neighbor);
-        return newNode;
+  toString() {
+    let s = "";
+    for (let vertex of this.#VERTICES) {
+      s += vertex + " -> ";
+      s +=[...this.#ADJ_LIST.get(vertex)].join(" ");
+      s += "\n";
     }
+    return s;
+  }
 }
 
 
+const COLOR = { WHITE: 0, GREY: 1, BLACK: 2 } 
+const initializeColor = vertices => {
+  const color = {};
+  vertices.forEach( v => { color[v] = COLOR.WHITE });
+  return color;
+}
 
-class Graph {
-    #id;
-    #degree;
-    #size;
+const BFS = (graph, startVertex) => {
+  const vertices = graph.vertices;
+  const adjList = graph.adjList;
+  const color = initializeColor(vertices);
+  const queue = [startVertex];
+  const distances = {};
+  const predecessors = {};
+  
+  vertices.forEach(v => {
+    distances[v] = 0;
+    predecessors[v] = null;
+  });
 
-    static concat(targetGraph, ...graphs) {
-        try {
-            if (targetGraph !== undefined) {
-                if (graphs === undefined || graphs.length === 0) return targetGraph;
-                graphs.forEach(graph => {
-                   let nodes = Object.keys(graph.nodes);
-                   let links = Object.keys(graph.links);
-                   console.log(nodes, links)
-                });
-                return targetGraph;
-            } else {
-                throw new Error("the first parameter must to be set");
-            }
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
+  while (queue.length !== 0) {
+    const u = queue.shift();
+    const neighbor = adjList.get(u);
+    color[u] = COLOR.GREY;
+    neighbor.forEach(n => {
+      if (color[n] === COLOR.WHITE) {
+        color[n] = COLOR.GREY;
+        distances[n] = distances[u] + 1;
+        predecessors[n] = u;
+        queue.push(n);
+      }
+    });
+    color[u] = COLOR.BLACK;
+  }
+  return { distances, predecessors }; 
+}
+
+const DFS = graph => {
+  const vertices = graph.vertices;
+  const adjList = graph.adjList;
+  const color = initializeColor(vertices);
+  const discovery = {};
+  const finished = {};
+  const predecessors = {};
+  const time = { count: 0 };
+  
+  vertices.forEach(v => {
+    finished[v] = 0;
+    discovery[v] = 0;
+    predecessors[v] = null;
+  });
+
+  vertices.forEach(v => {
+    if (color[v] === COLOR.WHITE) 
+      DFSVisit(v, color, discovery, finished, predecessors, time, adjList);
+  });
+  return { discovery, finished, predecessors }
+}
+
+const DFSVisit = (u, color, d, f, p, time, adjList) => {
+  color[u] = COLOR.GREY;
+  d[u] = ++time.count;
+  const neighbors = adjList.get(u);
+  neighbors.forEach(n => {
+    if (color[n] === COLOR.WHITE) {
+      p[n] = u;
+      DFSVisit(n, color, d, f, p, time, adjList);
     }
-
-    /**
-     * @param  {...Node} nodes 
-     */
-    constructor(...nodes) {
-        this.nodes = {};
-        this.links = {};
-        this.#degree = 0;
-        this.#size = 0;
-        this.#id = 0;
-
-        if (nodes !== undefined && nodes.length > 0) {
-            for (let node of nodes) {
-                this.addNode(node);
-            }
-        }
-    }
-
-    /**
-     * @return {number}
-     */
-    get size() { return this.#size}
-
-    /**
-     * @return {number}
-     */
-    get degree() { return this.#degree}
-
-    /**
-     * @param {*} value 
-     * @param {string | number} name 
-     * @param  {...string | number} neighbors 
-     * @returns {bool}
-     */
-    createNode(value, name, ...neighbors) {
-        try {
-            if (name === undefined) {
-                name = this.#id + "";
-                this.#id++;
-            }
-
-            if (this.nodes[name] !== undefined) {
-                this.nodes[name].value = value;
-                return true;
-            } else {
-                this.nodes[name] = new Node(value, name);
-            }
-
-            if (neighbors !== undefined && neighbors.length > 0) {
-                this.link(name, ...neighbors)
-            }
-
-            this.#size++;
-            return true;
-
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
-    }
-
-    /**
-     * @param {Node} node 
-     * @param  {...string | number} neighbors 
-     * @returns {bool}
-     */
-    addNode(node, ...neighbors) {
-        try{
-            if (node !== undefined && node.id !== undefined) {
-                
-                if (this.nodes[node.id] !== undefined) {
-                    this.nodes[node.id].val = node.value;
-                } else {
-                    this.nodes[node.id].val = node.value;
-                    this.nodes[node.id].neighbors = new Map();
-                    if (neighbors !== undefined && neighbors.length > 0)
-                    this.link(node.id, ...neighbors);
-                }
-                return true
-            }
-        } catch (err) {
-            console.error(err);
-            return false;
-        } 
-    }
-
-    /**
-     * @param {number | string} node 
-     * @param  {... number | string} linkNodes 
-     * @returns {bool}
-     */
-    link(node, ...linkNodes) {
-        if (node !== undefined && linkNodes.length > 0 && this.nodes[node] !== undefined) {
-            let num = 0;
-
-            for (let el of linkNodes) {
-                if (this.nodes[el] === undefined) continue;
-
-                this.nodes[node].link(this.nodes[el]);
-
-                if (this.links[el] === undefined) this.links[el] = new Set();
-                if (!this.links[el].has(node + "")) {
-                    this.links[el].add(node + "");
-                    num++;
-                }
-
-                if (this.links[node] === undefined) this.links[node] = new Set();
-                if (!this.links[node].has(el + "")) this.links[node].add(el + "");
-            }
-
-            this.#degree += num;
-            return true;
-        }
-    }
-
-    /**
-     * @param {number | string} node 
-     * @param  {...number | string} unlinkNodes 
-     * @returns {bool}
-     */
-    unlink(node, ...unlinkNodes) {
-        if (node !== undefined && unlinkNodes.length > 0 && this.nodes[node] !== undefined) {
-            let num = 0;
-
-            for (let el of unlinkNodes) {
-                if (this.nodes[el] === undefined) continue;
-
-                this.nodes[node].unlink(this.nodes[el]);
-
-                if (this.links[el] !== undefined && this.links[el].has(node + "")) {
-                    this.links[el].delete(node + "");
-                    num++;
-
-                    if (this.links[el].size === 0) delete this.links[el];
-                } 
-
-                if (this.links[node] !== undefined && this.links[node].has(el + "")) {
-                    this.links[node].delete(el + "");
-
-                    if (this.links[node].size === 0) delete this.links[node];
-                }
-            }
-
-            this.#degree -= num;
-            return true;
-        }
-    }
-
-    /**
-     * @param  {...string | number} nodes 
-     * @returns {bool}
-     */
-    delete(...nodes) {
-        try {
-            if (nodes !== undefined && this.nodes.length > 0) {
-                for (let node of nodes) {
-                    if (this.nodes[node] !== undefined) {
-                        for (let [neighbor] of this.nodes[node].neighbors) {
-                            this.unlink(node, neighbor);
-                        }
-                        delete this.nodes[node];
-                        this.#size--;
-                    }
-                }
-                return true;
-            }
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
-    }
-
-    get(nodeId) {
-        let links = this.links[nodeId] || null;
-        return {node: this.nodes[nodeId], links}
-    }
-
-    clean() {
-        this.nodes = {};
-        this.links = {};
-        this.#degree = 0;
-        this.#size = 0;
-        this.#id = 0;
-    }
-
-    copy() {
-        let copyGraph = new Graph();
-        let nodes = Object.keys(this.nodes);
-        
-        return copyGraph;
-    }
+  });
+  color[u] = COLOR.BLACK;
+  f[u] = ++time.count;
 } 
 
 
-//Util Functions
+const graph = new Graph();
+const myVertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
-//Use DynamicQueue class
-/**
- * use BFS (breadth first search) algorithm.
- * @param {string | number} rootNode 
- * @param {string | number} targetNode 
- * @param {Graph} graph 
- * @returns {number}
- */
- const shortestPath = (rootNode, targetNode, graph) => {
-    if (graph.nodes[rootNode] !== undefined && graph.nodes[targetNode] !== undefined) {
+for (let i = 0; i < myVertices.length; graph.addVertex(myVertices[i++]));
 
-        let queue = new DynamicQueue(rootNode);
-        let visited = new Set();
-        let step = 0;
+console.log(graph);
+graph.addEdge('A', 'B');
+graph.addEdge('A', 'C');
+graph.addEdge('A', 'D');
+graph.addEdge('C', 'D');
+graph.addEdge('C', 'G');
+graph.addEdge('D', 'G');
+graph.addEdge('D', 'H');
+graph.addEdge('B', 'E');
+graph.addEdge('B', 'F');
+graph.addEdge('E', 'I');
 
-        visited.add(rootNode);
-        stack.add(rootNode);
-    
-        while (!stack.isEmpty()) {
-            let size = queue.length;
+let bfs = BFS(graph, "A");
+console.log(bfs);
 
-            for (let i = 0; i < size; i++) {
-                let cur = queue.head;
-    
-                if (cur === targetNode) {
-                    console.log(stack);
-                    return step;
-                };
-    
-                for (let [next] of graph.nodes[cur].neighbors) {
-                    if (!visited.has(next)) {
-                        queue.add(next);
-                        visited.add(next);
-                    }
-                }
-                queue.delete();
-            }
-            step++;
-        }
+let dfs = DFS(graph);
+console.log(dfs);
+
+const graph2 = new Graph(true);
+const myVertices2 = ["A", "B", "C", "D", "E", "F"];
+myVertices2.forEach(v => graph.addVertex(v));
+graph2.addEdge('A', 'C');
+graph2.addEdge('A', 'D');
+graph2.addEdge('B', 'D');
+graph2.addEdge('B', 'E');
+graph2.addEdge('C', 'F');
+graph2.addEdge('F', 'E');
+const result = DFS(graph2);
+console.log(result);
+
+const fTimes = result.finished;
+let s = "";
+for (let x of myVertices2) {
+  let max = 0;
+  let maxName = null;
+  myVertices2.forEach(v => {
+    if (fTimes[v] > max) {
+      max = fTimes[v];
+      maxName = v;
     }
-    return -1;
-}
-
+  });
+  s += " - " + maxName;
+  delete fTimes[maxName];
+} 
+console.log(s);

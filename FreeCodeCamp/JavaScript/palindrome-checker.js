@@ -9,20 +9,20 @@
 
 
 function palindrome(str) {
-    const regex = /[a-z0-9]/ig;
-    let arr = str.toLowerCase().match(regex);
-    
-    if (arr === null) return undefined;
+  const regex = /[a-z0-9]/ig;
+  let arr = str.toLowerCase().match(regex);
   
-    let length = arr.length;
-  
-    for( let i = 0; i < (length / 2); i++ ){
-  
-      if ( arr[i] !== arr[length - 1 - i] ) return false;
-      continue;
-    }
-    return true;
+  if (arr === null) return undefined;
+
+  let length = arr.length;
+
+  for( let i = 0; i < (length / 2); i++ ){
+
+    if ( arr[i] !== arr[length - 1 - i] ) return false;
+    continue;
   }
+  return true;
+}
   
   
-  palindrome("eye");
+palindrome("eye");
